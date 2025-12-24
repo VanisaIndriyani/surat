@@ -90,6 +90,22 @@
             .sidebar-mobile.show {
                 transform: translateX(0);
             }
+            
+            /* Improve touch targets on mobile */
+            .nav-item {
+                min-height: 44px;
+            }
+            
+            button, a {
+                min-height: 44px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            /* Mobile optimizations */
+            body {
+                font-size: 14px;
+            }
         }
         
         .card-hover {
@@ -99,6 +115,13 @@
         .card-hover:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Prevent horizontal scroll on mobile */
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
         }
     </style>
 </head>
@@ -248,45 +271,45 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
             <header class="bg-white shadow-md border-b border-gray-200">
-                <div class="flex items-center justify-between px-6 py-4">
-                    <div class="flex items-center">
-                        <button onclick="toggleSidebar()" class="md:hidden text-gray-600 hover:text-indigo-600 mr-4 transition-colors">
-                            <i class="fas fa-bars text-xl"></i>
+                <div class="flex items-center justify-between px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                    <div class="flex items-center flex-1 min-w-0">
+                        <button onclick="toggleSidebar()" class="md:hidden text-gray-600 hover:text-indigo-600 mr-2 sm:mr-4 transition-colors p-2 -ml-2">
+                            <i class="fas fa-bars text-lg sm:text-xl"></i>
                         </button>
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900"><?php echo $__env->yieldContent('header', 'Dashboard'); ?></h2>
-                            <p class="text-xs text-gray-500 mt-0.5">Arsip Surat Ngodingyuk</p>
+                        <div class="min-w-0 flex-1">
+                            <h2 class="text-base sm:text-lg md:text-xl font-bold text-gray-900 truncate"><?php echo $__env->yieldContent('header', 'Dashboard'); ?></h2>
+                            <p class="text-xs text-gray-500 mt-0.5 hidden sm:block">Arsip Surat Ngodingyuk</p>
                         </div>
                     </div>
                     
                     <!-- Profile Dropdown -->
-                    <div class="relative">
-                        <button onclick="toggleProfileDropdown()" class="flex items-center space-x-3 bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-2 rounded-xl hover:from-indigo-100 hover:to-purple-100 transition-all duration-200 focus:outline-none border border-indigo-100">
-                            <div class="w-10 h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
-                                <i class="fas fa-user text-white text-sm"></i>
+                    <div class="relative ml-2 sm:ml-4">
+                        <button onclick="toggleProfileDropdown()" class="flex items-center space-x-1 sm:space-x-3 bg-gradient-to-r from-indigo-50 to-purple-50 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl hover:from-indigo-100 hover:to-purple-100 transition-all duration-200 focus:outline-none border border-indigo-100">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
+                                <i class="fas fa-user text-white text-xs sm:text-sm"></i>
                             </div>
                             <div class="hidden md:block text-left">
-                                <p class="text-sm font-semibold text-gray-900"><?php echo e(Auth::user()->name); ?></p>
+                                <p class="text-sm font-semibold text-gray-900 truncate max-w-[120px]"><?php echo e(Auth::user()->name); ?></p>
                                 <p class="text-xs text-gray-500">Administrator</p>
                             </div>
-                            <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs hidden sm:block"></i>
                         </button>
                         
-                        <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden animate-fade-in">
+                        <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 sm:w-56 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden animate-fade-in">
                             <div class="py-2">
-                                <div class="px-4 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-100">
-                                    <p class="text-sm font-semibold text-gray-900"><?php echo e(Auth::user()->name); ?></p>
-                                    <p class="text-xs text-gray-500"><?php echo e(Auth::user()->email ?? 'admin@arsip.com'); ?></p>
+                                <div class="px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-100">
+                                    <p class="text-xs sm:text-sm font-semibold text-gray-900 truncate"><?php echo e(Auth::user()->name); ?></p>
+                                    <p class="text-xs text-gray-500 truncate"><?php echo e(Auth::user()->email ?? 'admin@arsip.com'); ?></p>
                                 </div>
-                                <a href="<?php echo e(route('profile.index')); ?>" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition-colors">
-                                    <i class="fas fa-user-cog mr-3 text-indigo-600"></i>
+                                <a href="<?php echo e(route('profile.index')); ?>" class="flex items-center px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 hover:bg-indigo-50 transition-colors">
+                                    <i class="fas fa-user-cog mr-2 sm:mr-3 text-indigo-600"></i>
                                     <span>Profile Settings</span>
                                 </a>
                                 <hr class="my-1 border-gray-100">
                                 <form method="POST" action="<?php echo e(route('logout')); ?>">
                                     <?php echo csrf_field(); ?>
-                                    <button type="submit" class="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
-                                        <i class="fas fa-sign-out-alt mr-3"></i>
+                                    <button type="submit" class="flex items-center w-full px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                        <i class="fas fa-sign-out-alt mr-2 sm:mr-3"></i>
                                         <span>Logout</span>
                                     </button>
                                 </form>
@@ -297,23 +320,23 @@
             </header>
             
             <!-- Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-100 p-3 sm:p-4 md:p-6">
                 <?php if(session('success')): ?>
-                    <div class="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-800 px-6 py-4 rounded-lg shadow-md flex items-center animate-fade-in">
-                        <i class="fas fa-check-circle mr-3 text-green-500 text-xl"></i>
-                        <div>
-                            <p class="font-semibold">Berhasil!</p>
-                            <p class="text-sm"><?php echo e(session('success')); ?></p>
+                    <div class="mb-4 sm:mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-800 px-3 sm:px-4 md:px-6 py-3 sm:py-4 rounded-lg shadow-md flex items-start sm:items-center animate-fade-in">
+                        <i class="fas fa-check-circle mr-2 sm:mr-3 text-green-500 text-lg sm:text-xl flex-shrink-0 mt-0.5 sm:mt-0"></i>
+                        <div class="min-w-0 flex-1">
+                            <p class="font-semibold text-sm sm:text-base">Berhasil!</p>
+                            <p class="text-xs sm:text-sm mt-0.5"><?php echo e(session('success')); ?></p>
                         </div>
                     </div>
                 <?php endif; ?>
                 
                 <?php if(session('error')): ?>
-                    <div class="mb-6 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-800 px-6 py-4 rounded-lg shadow-md flex items-center animate-fade-in">
-                        <i class="fas fa-exclamation-circle mr-3 text-red-500 text-xl"></i>
-                        <div>
-                            <p class="font-semibold">Error!</p>
-                            <p class="text-sm"><?php echo e(session('error')); ?></p>
+                    <div class="mb-4 sm:mb-6 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-800 px-3 sm:px-4 md:px-6 py-3 sm:py-4 rounded-lg shadow-md flex items-start sm:items-center animate-fade-in">
+                        <i class="fas fa-exclamation-circle mr-2 sm:mr-3 text-red-500 text-lg sm:text-xl flex-shrink-0 mt-0.5 sm:mt-0"></i>
+                        <div class="min-w-0 flex-1">
+                            <p class="font-semibold text-sm sm:text-base">Error!</p>
+                            <p class="text-xs sm:text-sm mt-0.5"><?php echo e(session('error')); ?></p>
                         </div>
                     </div>
                 <?php endif; ?>
