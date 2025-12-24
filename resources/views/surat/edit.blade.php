@@ -207,17 +207,15 @@
                 <label for="file" class="block text-sm font-semibold text-gray-700 mb-2">
                     <i class="fas fa-paperclip mr-2 text-indigo-600"></i>{{ $surat->file_path ? 'Ganti File Surat' : 'Upload File Surat' }} (Opsional)
                 </label>
-                <div id="upload-area" class="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-200 cursor-pointer">
-                    <div class="space-y-2 text-center">
+                <input id="file" name="file" type="file" class="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                <div id="upload-area" class="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-200 cursor-pointer" onclick="document.getElementById('file').click()">
+                    <div id="upload-content" class="space-y-2 text-center">
                         <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
                         <div class="flex text-sm text-gray-600 justify-center items-center">
-                            <label for="file" class="relative cursor-pointer bg-white rounded-lg font-semibold text-indigo-600 hover:text-indigo-700 px-4 py-2 hover:bg-indigo-50 transition-all focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                <span>Upload file</span>
-                                <input id="file" name="file" type="file" class="sr-only" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                            </label>
-                            <p class="pl-2 text-gray-500">atau drag and drop</p>
+                            <span class="font-semibold text-indigo-600">Klik untuk upload file</span>
+                            <span class="pl-2 text-gray-500">atau drag and drop</span>
                         </div>
-                        <p class="text-xs text-gray-500">PDF, DOC, DOCX, JPG, JPEG, PNG (maks. 2MB)</p>
+                        <p class="text-xs text-gray-500">PDF, DOC, DOCX, JPG, JPEG, PNG (maks. 10MB)</p>
                         @if($surat->file_path)
                         <p class="text-xs text-orange-600 font-medium">
                             <i class="fas fa-exclamation-triangle mr-1"></i>File baru akan menggantikan file yang ada
@@ -251,7 +249,9 @@
     // File upload preview
     const fileInput = document.getElementById('file');
     const uploadArea = document.getElementById('upload-area');
+    const uploadContent = document.getElementById('upload-content');
     const hasExistingFile = {{ $surat->file_path ? 'true' : 'false' }};
+    const originalContent = uploadContent.innerHTML;
     
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -261,7 +261,7 @@
                 warningHtml = '<p class="text-xs text-orange-600 font-medium"><i class="fas fa-exclamation-triangle mr-1"></i>File baru akan menggantikan file yang ada</p>';
             }
             
-            uploadArea.innerHTML = `
+            uploadContent.innerHTML = `
                 <div class="space-y-2 text-center">
                     <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
                         <i class="fas fa-file-check text-3xl text-green-600"></i>
@@ -269,14 +269,13 @@
                     <p class="text-sm font-semibold text-gray-900">${file.name}</p>
                     <p class="text-xs text-gray-500">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
                     ${warningHtml}
-                    <label for="file" class="inline-block mt-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg font-medium hover:bg-indigo-200 transition-colors cursor-pointer text-sm">
+                    <button type="button" onclick="document.getElementById('file').click(); event.stopPropagation();" class="inline-block mt-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg font-medium hover:bg-indigo-200 transition-colors cursor-pointer text-sm">
                         <i class="fas fa-sync-alt mr-1"></i>Ganti file
-                    </label>
-                    <input id="file" name="file" type="file" class="sr-only" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    </button>
                 </div>
             `;
-            // Re-attach event listener
-            document.getElementById('file').addEventListener('change', arguments.callee);
+        } else {
+            uploadContent.innerHTML = originalContent;
         }
     });
     
